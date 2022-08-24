@@ -8,4 +8,9 @@ public interface IGenericService<T> {
 
     void save(T t);
 
+    void remove(int id);
+
+    T findById(int id);
+
+    void updateData();
 }

@@ -57,7 +57,7 @@ public class ViewHome {
                 new ViewMainMenu().menu();
                 return;
         }
-        menuUser();
+        menuAdmin();
     }
 
     private void formUserManage() {

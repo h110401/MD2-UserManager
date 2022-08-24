@@ -30,6 +30,27 @@ public class UserServiceIMPL implements IUserService {
     @Override
     public void save(User user) {
         userList.add(user);
+        updateData();
+    }
+
+    @Override
+    public void remove(int id) {
+        userList.remove(findById(id));
+        updateData();
+    }
+
+    @Override
+    public User findById(int id) {
+        for (User user : userList) {
+            if (user.getId() == id) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void updateData() {
         config.write(PATH_USER, userList);
     }
 
