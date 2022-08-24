@@ -1,5 +1,6 @@
 package controller;
 
+import dto.request.SignInDTO;
 import dto.request.SignUpDTO;
 import dto.response.ResponseMessenger;
 import model.Role;
@@ -59,5 +60,15 @@ public class UserController {
         userService.save(user);
 
         return new ResponseMessenger("success");
+    }
+
+    public ResponseMessenger login(SignInDTO signInDTO) {
+        if( ! userService.checkLogin(signInDTO.getUsername(), signInDTO.getPassword())) {
+            return new ResponseMessenger("login_failure");
+        }
+
+
+
+        return new ResponseMessenger("login_success");
     }
 }

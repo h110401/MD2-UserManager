@@ -9,7 +9,7 @@ import java.util.List;
 public class UserServiceIMPL implements IUserService {
 
     static String PATH_USER = "src/database/user.txt";
-
+    static String PATH_USER_LOGIN = "src/database/user_login.txt";
     static Config<List<User>> config = new Config<>();
 
     static List<User> userList = config.read(PATH_USER);
@@ -47,6 +47,16 @@ public class UserServiceIMPL implements IUserService {
     public boolean existsByEmail(String email) {
         for (User user : userList) {
             if (user.getEmail().equals(email)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean checkLogin(String username, String password) {
+        for (User user : userList) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
                 return true;
             }
         }
