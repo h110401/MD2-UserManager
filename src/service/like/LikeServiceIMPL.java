@@ -2,12 +2,16 @@ package service.like;
 
 import config.Config;
 import model.Like;
+import model.User;
+import service.user.IUserService;
+import service.user.UserServiceIMPL;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class LikeServiceIMPL implements ILikeService {
 
+    IUserService userService = new UserServiceIMPL();
     static String PATH_LIKE = "src/database/like.txt";
 
     static Config<List<Like>> config = new Config<>();
@@ -33,7 +37,15 @@ public class LikeServiceIMPL implements ILikeService {
 
     @Override
     public void remove(int id) {
-        likeList.remove(findById(id));
+        Like likeDelete = null;
+
+        for (Like like : likeList) {
+            if (like.getIdSong() == id && like.getIdUser() == userService.getCurrentUser().getId()) {
+                likeDelete = like;
+            }
+        }
+        likeList.remove(likeDelete);
+
         updateData();
     }
 
@@ -50,5 +62,30 @@ public class LikeServiceIMPL implements ILikeService {
     @Override
     public void updateData() {
         config.write(PATH_LIKE, likeList);
+    }
+
+    @Override
+    public int getLikeNumberBySongId(int id) {
+        int count = 0;
+
+        for (Like like : likeList) {
+            if (like.getIdSong() == id) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    @Override
+    public boolean checkLike(int id) {
+        User current = userService.getCurrentUser();
+
+        for (Like like : likeList) {
+            if (like.getIdSong() == id && like.getIdUser() == current.getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
