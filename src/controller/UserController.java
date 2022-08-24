@@ -63,12 +63,22 @@ public class UserController {
     }
 
     public ResponseMessenger login(SignInDTO signInDTO) {
-        if( ! userService.checkLogin(signInDTO.getUsername(), signInDTO.getPassword())) {
+        if (!userService.checkLogin(signInDTO.getUsername(), signInDTO.getPassword())) {
             return new ResponseMessenger("login_failure");
         }
 
+        User userLogin = userService.findByUsername(signInDTO.getUsername());
 
+        userService.saveCurrentUser(userLogin);
 
         return new ResponseMessenger("login_success");
+    }
+
+    public User getCurrentUser() {
+        return userService.getCurrentUser();
+    }
+
+    public void logout() {
+        userService.saveCurrentUser(null);
     }
 }

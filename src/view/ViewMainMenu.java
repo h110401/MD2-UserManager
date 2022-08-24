@@ -5,14 +5,12 @@ import controller.UserController;
 import dto.request.SignInDTO;
 import dto.request.SignUpDTO;
 import dto.response.ResponseMessenger;
-import model.Role;
 import model.User;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class ViewMainMenu {
 
@@ -50,7 +48,7 @@ public class ViewMainMenu {
         while (true) {
             System.out.println("Enter username:");
             username = Config.scanner().nextLine();
-            if (username.matches("[a-zA-Z]{1,10}")) {
+            if (username.matches("[a-zA-Z0-9]{1,10}")) {
                 break;
             } else {
                 System.out.println("Invalid username, try again!");
@@ -74,6 +72,7 @@ public class ViewMainMenu {
         switch (responseMessenger.getMessage()) {
             case "login_success":
                 System.out.println("Login successful!");
+                new ViewHome();
                 break;
             case "login_failure":
                 System.out.println("Username or password is incorrect!");
@@ -107,7 +106,7 @@ public class ViewMainMenu {
         while (true) {
             System.out.println("Enter username:");
             username = Config.scanner().nextLine();
-            if (username.matches("[a-zA-Z]{1,10}")) {
+            if (username.matches("[a-zA-Z0-9]{1,10}")) {
                 break;
             } else {
                 System.out.println("Invalid username, try again!");

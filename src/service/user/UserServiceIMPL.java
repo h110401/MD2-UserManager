@@ -62,4 +62,26 @@ public class UserServiceIMPL implements IUserService {
         }
         return false;
     }
+
+    @Override
+    public User getCurrentUser() {
+        User user = new Config<User>().read(PATH_USER_LOGIN);
+        if (user == null) return null;
+        return findByUsername(user.getUsername());
+    }
+
+    @Override
+    public void saveCurrentUser(User user) {
+        new Config<User>().write(PATH_USER_LOGIN, user);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        for (User user : userList) {
+            if (user.getUsername().equals(username)) {
+                return user;
+            }
+        }
+        return null;
+    }
 }

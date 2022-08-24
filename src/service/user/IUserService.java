@@ -9,4 +9,10 @@ public interface IUserService extends IGenericService<User> {
     boolean existsByEmail(String email);
 
     boolean checkLogin(String username, String password);
+
+    User getCurrentUser();
+
+    void saveCurrentUser(User user);
+
+    User findByUsername(String username);
 }
