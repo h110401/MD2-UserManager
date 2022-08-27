@@ -1,10 +1,15 @@
 package service.user;
 
 import config.Config;
+import model.Role;
+import model.RoleName;
 import model.User;
+import service.role.RoleServiceIMPL;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class UserServiceIMPL implements IUserService {
 
@@ -15,8 +20,20 @@ public class UserServiceIMPL implements IUserService {
     static List<User> userList = config.read(PATH_USER);
 
     static {
-        if (userList == null) {
+        if (userList == null || userList.size() == 0) {
             userList = new ArrayList<>();
+            Set<Role> roles = new HashSet<>();
+            roles.add(new RoleServiceIMPL().findByRoleName(RoleName.ADMIN));
+            userList.add(
+                    new User(
+                            0,
+                            "Admin",
+                            "admin",
+                            "admin@admin.admin",
+                            "admin",
+                            roles
+                    )
+            );
         }
     }
 
@@ -52,6 +69,11 @@ public class UserServiceIMPL implements IUserService {
     @Override
     public void updateData() {
         config.write(PATH_USER, userList);
+    }
+
+    @Override
+    public int getLastId() {
+        return userList.get(userList.size() - 1).getId() + 1;
     }
 
     @Override
@@ -104,5 +126,20 @@ public class UserServiceIMPL implements IUserService {
             }
         }
         return null;
+    }
+
+    @Override
+    public void changeRole(int id, Role role) {
+        Set<Role> roles = new HashSet<>();
+        roles.add(role);
+        findById(id).setRoles(roles);
+        updateData();
+    }
+
+    @Override
+    public void changeStatus(int id) {
+        User user = findById(id);
+        user.setStatus(!user.isStatus());
+        updateData();
     }
 }

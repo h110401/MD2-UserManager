@@ -5,7 +5,7 @@ import java.util.Set;
 
 public class User implements Serializable {
 
-
+    private static final long serialVersionUID = 1L;
     private int id;
     private String name;
     private String username;
@@ -89,6 +89,16 @@ public class User implements Serializable {
     public Set<Role> getRoles() {
         return roles;
     }
+
+    public RoleName getRoleName() {
+        for (Role role : roles) {
+            if (role.getRoleName() == RoleName.ADMIN) return RoleName.ADMIN;
+            if (role.getRoleName() == RoleName.USER) return RoleName.USER;
+            if (role.getRoleName() == RoleName.PM) return RoleName.PM;
+        }
+        return null;
+    }
+
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;

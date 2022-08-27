@@ -6,6 +6,7 @@ import dto.request.SignInDTO;
 import dto.request.SignUpDTO;
 import dto.response.ResponseMessenger;
 import model.User;
+import service.user.UserServiceIMPL;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,6 +20,7 @@ public class ViewMainMenu {
     List<User> userList = userController.getUserList();
 
     public void menu() {
+
         System.out.println("*****MENU*****");
         System.out.println("1. Show user list");
         System.out.println("2. Register");
@@ -70,32 +72,28 @@ public class ViewMainMenu {
         ResponseMessenger responseMessenger = userController.login(signInDTO);
 
         switch (responseMessenger.getMessage()) {
+            case "blocked":
+                System.err.println("This user is blocked");
+                break;
             case "login_success":
                 System.out.println("Login successful!");
                 new ViewHome();
                 break;
             case "login_failure":
                 System.out.println("Username or password is incorrect!");
-                break;
         }
-
     }
 
     private void formRegister() {
         System.out.println("*****REGISTER*****");
         //id
-        int id;
-        if (userList.isEmpty()) {
-            id = 1;
-        } else {
-            id = userList.get(userList.size() - 1).getId() + 1;
-        }
+        int id = userController.getLastId();
         //name
         String name;
         while (true) {
             System.out.println("Enter name:");
             name = Config.scanner().nextLine();
-            if (name.matches("[A-Z][a-zA-Z ]{1,10}")) {
+            if (name.matches("[A-Z][a-zA-Z0-9 ]{1,10}")) {
                 break;
             } else {
                 System.out.println("Invalid name, try again!");
@@ -135,8 +133,7 @@ public class ViewMainMenu {
             }
         }
         //role
-        System.out.println("Enter role:");
-        String role = Config.scanner().nextLine();
+        String role = "user";
         Set<String> strRole = new HashSet<>();
         strRole.add(role);
 

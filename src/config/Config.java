@@ -17,6 +17,24 @@ public class Config<T> {
         return sc;
     }
 
+    public static int getValidInteger() {
+        int integer;
+        while (true) {
+            System.out.println("Enter choice / 0 to back");
+            String s = sc.nextLine();
+
+            if (Integer.parseInt(s) == 0) return 0;
+
+            if (s.matches("\\d+")) {
+                integer = Integer.parseInt(s);
+                break;
+            } else {
+                System.out.println("Invalid number, try again!");
+            }
+        }
+        return integer;
+    }
+
     public T read(String path) {
         try (
                 FileInputStream fis = new FileInputStream(path);
